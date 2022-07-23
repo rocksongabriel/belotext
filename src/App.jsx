@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
   Box,
   Text,
@@ -40,10 +40,18 @@ const TextCard = (props) => {
 }
 
 export default function App () {
+  const [limitNumber, setLimitNumber] = useState(160)
+  const [text, setText] = useState('')
+
+  const handleButtonClick = () => {
+    console.log(limitNumber)
+    console.log(text)
+  }
+
   return <>
     <Box px={[5, 10]}>
       {/* BeloText Big Header  */}
-      <Text fontSize={['3xl', '4xl']} fontFamily={'cursive'} fontWeight="bold" textAlign={'center'} pt={[4]} pb={1}>BeloText</Text>
+      <Text fontSize={['3xl', '4xl']} color={'red.600'} fontFamily={'cursive'} fontWeight="bold" textAlign={'center'} pt={[4]} pb={1}>BeloText</Text>
       <Text fontSize={['medium', 'lg']} color='gray.600' fontWeight='bold' textAlign={['left', 'left', 'center']} pb={[10]}>
         Are you tired of always typing in limits? Type all your text, and split them into the limits.
       </Text>
@@ -51,7 +59,13 @@ export default function App () {
       <Stack direction={['column', null, null, 'row']} spacing={10}>
         {/* Form Container with two inputs and one button */}
         <VStack spacing={5} w={['100%', null, null, '50%', '33.33%']}>
-          <NumberInput w={'full'} >
+          <NumberInput
+            onChange={value => setLimitNumber(value)}
+            w={'full'}
+            value={limitNumber}
+            defaultValue={160}
+            allowMouseWheel
+          >
             <NumberInputField
               borderColor={'twitter.600'}
               borderWidth={'2px'}
@@ -59,12 +73,20 @@ export default function App () {
               placeholder={'Enter text limit'}
             />
             <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
+              <NumberIncrementStepper
+                bg='green.300'
+                _active={{ bg: 'green.300' }}
+              />
+              <NumberDecrementStepper
+                bg='red.300'
+                _active={{ bg: 'red.300' }}
+              />
             </NumberInputStepper>
           </NumberInput>
 
           <Textarea
+            value={text}
+            onChange={event => setText(event.target.value)}
             rows={15}
             borderColor={'twitter.600'}
             borderWidth={'2px'}
@@ -73,7 +95,10 @@ export default function App () {
           />
 
           {/* Button to Perform the magic  */}
-          <Button colorScheme={'facebook'}>Make Magic Happen</Button>
+          <Button
+            onClick={handleButtonClick}
+            colorScheme={'facebook'}
+          >Make Magic Happen</Button>
         </VStack>
 
         {/* The Split Texts in Cards  */}
